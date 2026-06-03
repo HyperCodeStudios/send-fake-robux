@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Send Robux Clone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Overlay Triggers -->
+    <div id="settings-trigger" class="settings-trigger"></div>
+    <div id="fake-send-trigger" class="fake-send-trigger"></div>
+    <div id="lang-trigger" class="lang-trigger"></div>
+
+    <!-- Roblox Screenshot Background -->
+    <div id="roblox-bg" class="roblox-bg-image">
+        <!-- Sidebar Name & Avatar (Mitte-links) -->
+        <div class="sidebar-wrapper">
+            <img id="sidebar-avatar" class="sidebar-avatar" src="Images/No_Picture.png" alt="">
+            <div class="sidebar-user-info">
+                <span id="bg-sidebar-username" class="abs-label">Username</span>
+                <img src="Images/Roblox_Plus.svg" class="roblox-plus-icon-sidebar" alt="Roblox Plus">
+            </div>
+        </div>
+        
+        <!-- Nav Name & Avatar (Oben-rechts) -->
+        <div class="nav-wrapper">
+            <img id="nav-avatar" class="nav-avatar" src="Images/No_Picture.png" alt="">
+            <span id="bg-nav-username" class="abs-label-nav">Username</span>
+        </div>
+        
+        <!-- Robux Amount (Oben-rechts) -->
+        <div class="nav-robux-wrapper">
+            <span id="bg-nav-robux" class="abs-label nav-robux">0</span>
+        </div>
+    </div>
+
+    <!-- Hinzugefügte hidden Klasse, damit das Menü standardmäßig versteckt ist -->
+    <div class="modal-overlay hidden" id="main-overlay">
+        <div class="modal">
+            <!-- Header -->
+            <header class="modal-header">
+                <div class="header-left">
+                    <img src="Images/Roblox_Plus.svg" class="roblox-icon" width="20" height="20" alt="Roblox Plus">
+                    <h2>Send Robux</h2>
+                </div>
+                <div class="header-right">
+                    <img src="Images/Robux.png" class="robux-icon small" alt="Robux">
+                    <span id="current-balance">0</span>
+                    <button class="close-btn">&times;</button>
+                </div>
+            </header>
+
+            <div class="modal-body">
+                <!-- Screen 0: Setup -->
+                <div id="screen-setup" class="screen active">
+                    <h3 style="margin-bottom: 20px; text-align: center;">Welcome</h3>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #f2f2f2;">Your Username:</label>
+                        <input type="text" id="setup-username" placeholder="e.g. Builderman" class="amount-input" style="width: 100%; box-sizing: border-box; text-align: left; padding: 10px; font-size: 16px;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #f2f2f2;">Fake Display Name (Optional):</label>
+                        <input type="text" id="setup-display-name" placeholder="e.g. RealBuilderman" class="amount-input" style="width: 100%; box-sizing: border-box; text-align: left; padding: 10px; font-size: 16px;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #f2f2f2;">Your Robux Amount:</label>
+                        <input type="number" id="setup-robux" placeholder="e.g. 10000" class="amount-input" style="width: 100%; box-sizing: border-box; text-align: left; padding: 10px; font-size: 16px;">
+                    </div>
+                    <button id="setup-start-btn" class="primary-btn" style="width: 100%;">Start</button>
+                    <p id="setup-status" style="color: #ccc; text-align: center; margin-top: 15px; font-size: 14px;"></p>
+                </div>
+
+                <!-- Screen 1: Friend List -->
+                <div id="screen-friends" class="screen hidden">
+                    <div class="search-container">
+                        <input type="text" placeholder="Search by username">
+                    </div>
+                    <h3 class="friends-heading">My friends (50)</h3>
+                    <div class="friends-list" id="friends-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Screen 2: Amount Selection -->
+                <div id="screen-amount" class="screen hidden">
+                    <div class="selected-user">
+                        <img src="Images/No_Picture.png" alt="User avatar" class="large-avatar" id="selected-avatar">
+                        <p class="username-large" id="selected-username">Username</p>
+                    </div>
+                    <div class="amount-display">
+                        <img src="Images/Robux.png" class="robux-icon large" alt="Robux">
+                        <input type="number" id="selected-amount" value="200" min="1" class="amount-input">
+                    </div>
+                    <div class="amount-options">
+                        <button class="amount-btn" data-amount="25">
+                            <img src="Images/Robux.png" class="robux-icon mini" alt="Robux">
+                            25
+                        </button>
+                        <button class="amount-btn" data-amount="50">
+                            <img src="Images/Robux.png" class="robux-icon mini" alt="Robux">
+                            50
+                        </button>
+                        <button class="amount-btn" data-amount="100">
+                            <img src="Images/Robux.png" class="robux-icon mini" alt="Robux">
+                            100
+                        </button>
+                        <button class="amount-btn active" data-amount="200">
+                            <img src="Images/Robux.png" class="robux-icon mini" alt="Robux">
+                            200
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Screen 3: Loading -->
+                <div id="screen-loading" class="screen hidden centered-screen">
+                    <div class="spinner"></div>
+                    <h2 class="loading-title">Sending Robux...</h2>
+                    <p class="loading-subtitle">Please wait</p>
+                </div>
+
+                <!-- Screen 4: Success -->
+                <div id="screen-success" class="screen hidden centered-screen">
+                    <div class="success-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <h2 class="success-title">Robux Sent!</h2>
+                    <p class="success-subtitle">You sent <span id="sent-amount-text">200</span> Robux to <span id="sent-user-text" style="font-weight: 600;">Username</span></p>
+                </div>
+            </div>
+
+            <!-- Footer (Shared but visibility toggled) -->
+            <footer class="modal-footer hidden" id="modal-footer">
+                <button id="main-action-btn" class="primary-btn">Next</button>
+                <p id="footer-text" class="footer-text">Robux are sent within 1-2 days with no fees</p>
+            </footer>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
