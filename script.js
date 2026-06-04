@@ -117,8 +117,8 @@ function setupInitialScreen() {
         setupStartBtn.disabled = true;
 
         try {
-            // 1. Hole User ID anhand des Namens per POST Request (mithilfe von corsproxy um CORS zu umgehen)
-            const userRes = await fetch("https://corsproxy.io/?https://users.roblox.com/v1/usernames/users", {
+            // 1. Hole User ID anhand des Namens per POST Request
+            const userRes = await fetch("/api/roblox-usernames", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ usernames: [username], excludeBannedUsers: false })
@@ -156,8 +156,8 @@ function setupInitialScreen() {
                 const avatarRes = await fetch(`https://thumbnails.roproxy.com/v1/users/avatar-headshot?userIds=${friendIdsStr}&size=150x150&format=Png&isCircular=true`);
                 const avatarData = await avatarRes.json();
                 
-                // Get names through a single POST request to avoid CORS issues and long loading times
-                const namesRes = await fetch("https://corsproxy.io/?https://users.roblox.com/v1/users", {
+                // Get names through a single POST request
+                const namesRes = await fetch("/api/roblox-users", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ userIds: friendIds, excludeBannedUsers: false })
